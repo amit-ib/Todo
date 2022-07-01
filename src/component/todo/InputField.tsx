@@ -11,7 +11,7 @@ interface Props {
 const InputField = ({ todotext, setTodoText, handleAdd }: Props) => {
   return (
     <div>
-      <form onSubmit={handleAdd}>
+      <form onSubmit={handleAdd} className="form-add">
         <input
           type="text"
           value={todotext}

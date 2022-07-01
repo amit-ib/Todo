@@ -34,27 +34,31 @@ const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
 
   return (
     <form>
-      {todoSingleObj.isDone ? (
-        <s>{todoSingleObj.todo}</s>
-      ) : (
-        <span>{todoSingleObj.todo}</span>
-      )}
+      <div className="list-item">
+        {todoSingleObj.isDone ? (
+          <span className="list-item-text task-done">{todoSingleObj.todo}</span>
+        ) : (
+          <span className="list-item-text">{todoSingleObj.todo}</span>
+        )}
 
-      <span>
-        <AiFillDelete onClick={() => handleDelete(todoSingleObj.id)} />
-      </span>
-      <span>
-        <AiFillEdit
-          onClick={() => {
-            if (!editMode && !todoSingleObj.isDone) {
-              setEditMode(!editMode);
-            }
-          }}
-        />
-      </span>
-      <span>
-        <MdDone onClick={() => handleDone(todoSingleObj.id)} />
-      </span>
+        <div className="action-icons">
+          <span>
+            <AiFillDelete onClick={() => handleDelete(todoSingleObj.id)} />
+          </span>
+          <span>
+            <AiFillEdit
+              onClick={() => {
+                if (!editMode && !todoSingleObj.isDone) {
+                  setEditMode(!editMode);
+                }
+              }}
+            />
+          </span>
+          <span>
+            <MdDone onClick={() => handleDone(todoSingleObj.id)} />
+          </span>
+        </div>
+      </div>
     </form>
   );
 };
