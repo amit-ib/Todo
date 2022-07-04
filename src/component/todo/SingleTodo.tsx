@@ -27,37 +27,63 @@ const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
     );
   };
 
+  // function to handel Edit icon // passing id //
+  const handleEdit = (e: React.FormEvent, id: number) => {
+    e.preventDefault();
+    setTodos(
+      todoArrayOfObj.map((todoItem) =>
+        todoItem.id === id
+          ? { ...todoItem, todo: editTodo } // 1st look for isDone(say it is false) in ...todoItem then make it opposit (say true)
+          : todoItem
+      )
+    );
+    setEditMode(false);
+  };
+
   // function to handel delete icon // passing id //
   const handleDelete = (id: number) => {
     setTodos(todoArrayOfObj.filter((todoItem) => todoItem.id != id));
   };
 
   return (
-    <form>
+    <form onSubmit={(e) => handleEdit(e, todoSingleObj.id)}>
       <div className="list-item">
-        {todoSingleObj.isDone ? (
-          <span className="list-item-text task-done">{todoSingleObj.todo}</span>
-        ) : (
-          <span className="list-item-text">{todoSingleObj.todo}</span>
-        )}
-
-        <div className="action-icons">
-          <span>
-            <AiFillDelete onClick={() => handleDelete(todoSingleObj.id)} />
-          </span>
-          <span>
-            <AiFillEdit
-              onClick={() => {
-                if (!editMode && !todoSingleObj.isDone) {
-                  setEditMode(!editMode);
-                }
-              }}
+        <>
+          {editMode ? (
+            //If in edit mode then display Textbox
+            <input
+              value={editTodo}
+              // onChange is just going to allow to wright in textbox
+              onChange={(e) => setEditTodo(e.target.value)}
             />
-          </span>
-          <span>
-            <MdDone onClick={() => handleDone(todoSingleObj.id)} />
-          </span>
-        </div>
+          ) : todoSingleObj.isDone ? (
+            //Done item with strick out style
+            <span className="list-item-text task-done">
+              {todoSingleObj.todo}
+            </span>
+          ) : (
+            // Normal list item - "Not Done"
+            <span className="list-item-text">{todoSingleObj.todo}</span>
+          )}
+
+          <div className="action-icons">
+            <span>
+              <AiFillDelete onClick={() => handleDelete(todoSingleObj.id)} />
+            </span>
+            <span>
+              <AiFillEdit
+                onClick={() => {
+                  if (!editMode && !todoSingleObj.isDone) {
+                    setEditMode(!editMode);
+                  }
+                }}
+              />
+            </span>
+            <span>
+              <MdDone onClick={() => handleDone(todoSingleObj.id)} />
+            </span>
+          </div>
+        </>
       </div>
     </form>
   );
