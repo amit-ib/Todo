@@ -7,9 +7,15 @@ interface Props {
   todoArrayOfObj: TodoModal[];
   setTodos: React.Dispatch<React.SetStateAction<TodoModal[]>>; // is a function - copied from setTodos state
   todoSingleObj: TodoModal;
+  index: number;
 }
 
-const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
+const SingleTodo = ({
+  todoSingleObj,
+  todoArrayOfObj,
+  setTodos,
+  index,
+}: Props) => {
   // State to check edit state(if already in edit mode)
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -17,14 +23,21 @@ const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
   const [editTodo, setEditTodo] = useState<string>(todoSingleObj.todo);
 
   // function to handel done icon // passing id //
-  const handleDone = (id: number) => {
-    setTodos(
-      todoArrayOfObj.map((todoItem) =>
-        todoItem.id === id
-          ? { ...todoItem, isDone: !todoItem.isDone } // 1st look for isDone(say it is false) in ...todoItem then make it opposit (say true)
-          : todoItem
-      )
-    );
+  const handleDone = (id: number, index: number) => {
+    let filteredTodos = [...todoArrayOfObj];
+    if (filteredTodos[index].id === id) {
+      filteredTodos[index].isDone = !filteredTodos[index].isDone;
+    }
+    setTodos(filteredTodos);
+
+    // Same thing acheived through map function
+    // setTodos(
+    //   todoArrayOfObj.map((todoItem) =>
+    //     todoItem.id === id
+    //       ? { ...todoItem, isDone: !todoItem.isDone } // first it look for isDone(say it is false) in ...todoItem then make it opposit (say true)
+    //       : todoItem
+    //   )
+    // );
   };
 
   // function to handel Edit icon // passing id //
@@ -32,9 +45,7 @@ const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
     e.preventDefault();
     setTodos(
       todoArrayOfObj.map((todoItem) =>
-        todoItem.id === id
-          ? { ...todoItem, todo: editTodo } // 1st look for isDone(say it is false) in ...todoItem then make it opposit (say true)
-          : todoItem
+        todoItem.id === id ? { ...todoItem, todo: editTodo } : todoItem
       )
     );
     setEditMode(false);
@@ -80,7 +91,7 @@ const SingleTodo = ({ todoSingleObj, todoArrayOfObj, setTodos }: Props) => {
               />
             </span>
             <span>
-              <MdDone onClick={() => handleDone(todoSingleObj.id)} />
+              <MdDone onClick={() => handleDone(todoSingleObj.id, index)} />
             </span>
           </div>
         </>

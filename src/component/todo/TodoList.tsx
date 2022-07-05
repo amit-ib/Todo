@@ -9,12 +9,13 @@ interface Props {
 const TodoList = ({ todos, setTodos }: Props) => {
   return (
     <div>
-      {todos.map((allTodo) => (
+      {todos.map((allTodo, index) => (
         <SingleTodo
           todoSingleObj={allTodo}
           key={allTodo.id}
           setTodos={setTodos}
           todoArrayOfObj={todos}
+          index={index}
         />
         // <li>{allTodo.todo}</li>
       ))}
